@@ -1,9 +1,11 @@
 import random
 
+
 class Card(object):
     def __init__(self, value, suit):
         self.value = value
         self.suit = suit
+
 
 class FullDeck(list):
     def __init__(self):
@@ -15,9 +17,14 @@ class FullDeck(list):
     def shuffle(self):
         random.shuffle(self)
 
-    def print_shuffled_deck(self):
-        for card in self:
-            print(f"{card.value} of {card.suit}")
+
+class FiveCards:
+    def __init__(self):
+        self.cards = []
+
+    def add_card(self, card):
+        self.cards.append(card)
+
 
 class Player(object):
     def __init__(self, name, starting_stack):
@@ -28,8 +35,6 @@ class Player(object):
     def receive_card(self, card):
         self.hand.append(card)
 
-def main():
-    print("main executed")
 
 def play_game():
     player_name = input("Enter Your Name: ")
@@ -42,39 +47,44 @@ def play_game():
         print("Enter normal stack please")
         return
 
-    deck = FullDeck()
-    deck.shuffle()
-
-
     player1 = Player(name=player_name, starting_stack=player_stack)
     player2 = Player(name="Player 2", starting_stack=player_stack)
 
+    players = [player1, player2]
 
-    for _ in range(2):
-        card1 = deck.pop()
-        card2 = deck.pop()
-        player1.receive_card(card1)
-        player2.receive_card(card2)
+    def start_turn():
+        print("new round has started")
+        deck = FullDeck()
+        deck.shuffle()
 
+        comCards = FiveCards()
 
-    print(f"{player1.name}'s hand:")
-    for card in player1.hand:
-        print(f"{card.value} of {card.suit}")
+        for _ in range(2):
+            card1 = deck.pop()
+            card2 = deck.pop()
+            player1.receive_card(card1)
+            player2.receive_card(card2)
 
-    print(f"{player2.name}'s hand:")
-    for card in player2.hand:
-        print(f"{card.value} of {card.suit}")
+        for _ in range(3):
+            flop_card = deck.pop()
+            comCards.add_card(flop_card)
+
+    def end_turn():
+        print("Turn ended")
+
+    start_turn()
+    end_turn()
+
 
 def quit_game():
     print("Game quit.")
 
-def print_shuffled_deck():
-    deck = FullDeck()
-    deck.shuffle()
-    deck.print_shuffled_deck()
 
-if __name__ == "__main__":
-
-    main()
+def main():
+    print("main executed")
     play_game()
     quit_game()
+
+
+if __name__ == "__main__":
+    main()
